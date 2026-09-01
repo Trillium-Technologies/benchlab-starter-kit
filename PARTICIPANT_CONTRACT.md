@@ -321,6 +321,27 @@ The starter package uses the following JSON structure:
 The `forecast_speed_kms` array must contain exactly 72 values, ordered from
 `t0 + 1 hour` through `t0 + 72 hours`.
 
+
+\section*{Quick pre-submission checklist}
+
+Before uploading a real competition submission, confirm that:
+\begin{itemize}
+\item[-] □ the supplied example worked locally before you began modifying it;
+\item[-] □ your complete adapted workflow passes local_tests/test_local.sh ;
+\item[•] □ your image builds for linux/amd64;
+\item[-] □ your workflow accepts the supplied t0;
+\item[-] □ your live-data logic respects the t0 data cut-off;
+\item[-] □ your forecast contains exactly 72 hourly speed predictions;
+\item[•] □ your workflow returns the forecast through the required output path;
+\item[•] □ your CPU and memory request is a supported combination;
+\item[•] □ required runtime domains are declared in submission.json;
+\item[-] □ required model weights/assets are available at inference time;
+\item[•] □ your Docker image remains below the published size limit;
+\item[•] □ the workflow completes comfortably within the 15-minute budget;
+\item[•] □ Dockerfile, submission.json, and README.md are at the ZIP root;
+\item[-] □ your README.md documents the actual submitted workflow; and
+\item[-] □ you have left enough time to review a failed cloud qualification and resubmit if necessary.
+\end{itemize}
 The complete output object must be no larger than **1 MiB**.
 
 The running container receives a one-time output specification through:
