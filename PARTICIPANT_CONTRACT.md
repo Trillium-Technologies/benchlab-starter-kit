@@ -132,3 +132,188 @@ Benchlab will build the submitted Docker image and execute a real dry run.
 Only a submission that builds and completes a valid dry run becomes
 `ELIGIBLE` for live evaluation.
 
+### 8. Review the result of the real dry run
+
+After you upload your real competition submission, Benchlab handles the
+qualification process automatically.
+
+The platform will:
+
+1. validate the submitted package
+2. build the Docker image for `linux/amd64`
+3. check the resulting image against the competition limits
+4. launch a real inference dry run
+5. validate the uploaded forecast output 
+6. mark the submission `ELIGIBLE` only if the complete pathway succeeds
+
+A successful Docker build by itself is **not** enough to qualify.
+
+Your actual forecasting workflow must start successfully, complete within
+the runtime limit, return a valid forecast, and exit successfully.
+
+### 9. Fix and resubmit if necessary
+
+The pre-deployment period is intended to give you time to identify and fix
+integration problems before live evaluation begins.
+
+A real submission may fail for reasons such as:
+
+- a package-layout or configuration error
+- a Docker build failure
+- a missing dependency
+- a container startup or runtime error
+- failure to retrieve required input data
+- exceeding the runtime limit
+- producing an invalid or missing forecast
+
+Review the available status information and logs, correct the problem
+locally, rerun the local compatibility test, and submit a revised version.
+
+**Important:** a replacement upload becomes your latest submission and must
+qualify in its own right. Do not assume that an earlier eligible version
+will automatically remain available as a fallback if a replacement fails.
+
+Near the live-start deadline, leave enough time for the complete
+build-and-dry-run process and for any corrections that may be required.
+
+### 10. Reach `ELIGIBLE`
+
+A submission becomes `ELIGIBLE` only after its real Benchlab dry run has
+successfully completed and produced a valid forecast.
+
+Only `ELIGIBLE` submissions can take part in live evaluation.
+
+Once your intended competition version has reached `ELIGIBLE`, avoid making
+unnecessary last-minute changes. Any replacement submission must pass the
+qualification pathway again.
+
+### 11. Live execution begins
+
+Once live evaluation starts, participants do not manually trigger
+forecasts.
+
+Every 6 hours, Benchlab automatically:
+
+1. selects the qualified submission
+2. starts a fresh container from its built image
+3. supplies the new inference timestamp `t0`
+4. gives the container its one-time forecast output destination
+5. runs the forecasting workflow
+6. receives and validates the forecast 
+7. terminates the container
+
+The next inference cycle starts again from a fresh container.
+
+Your submitted image is therefore the reproducible forecasting system being
+evaluated. Your model may retrieve new permitted observations at each cycle,
+but its code, packaged model assets, and software environment come from the
+qualified image.
+
+---
+
+## The inference timestamp and data cut-off
+
+For every live run, Benchlab supplies an inference timestamp called `t0`.
+
+It is passed as the first command-line argument to the container entrypoint,
+for example:
+
+    20261111T060000Z
+
+The same value is also exposed as:
+
+    $INFERENCE_TIMESTAMP
+
+Your forecast is initialized at this time.
+
+The required 72 values represent:
+
+    forecast[0]  → t0 + 1 hour
+    forecast[1]  → t0 + 2 hours
+    ...
+    forecast[71] → t0 + 72 hours
+
+### No future data
+
+Your workflow may use historical and live public data, but every piece of
+information used for an inference at `t0` must have been available at or
+before `t0`.
+
+This remains true even if your container starts or retrieves the data a few
+minutes after the nominal inference timestamp.
+
+For example, for:
+
+    t0 = 2026-11-11 12:00 UTC
+
+a product that was already available at:
+
+    11:55 UTC
+
+may be used, even if your container retrieves it at 12:03 UTC.
+
+A product that first became available at:
+
+    12:01 UTC
+
+must **not** be used for the 12:00 forecast. It may be used in a later
+inference cycle.
+
+A useful rule to remember is:
+
+> **The fetch may happen after `t0`; the information may not.**
+
+Your workflow is responsible for respecting this cut-off.
+
+---
+
+## Data access and responsibility
+
+Benchlab does not provide or forward-fill the scientific input data required
+by each participant's model.
+
+Your submitted workflow is responsible for retrieving and handling its own
+permitted input data at inference time.
+
+You should design for realistic operational conditions, including:
+
+- data latency
+- missing observations
+- temporary upstream-service failures
+- changes in response time
+- incomplete input products
+
+Do not assume that every external source will always respond immediately or
+contain every expected observation.
+
+Public internet access is available to the running container, subject to
+the published competition rules and a 20 GB-per-run network fair-use limit.
+
+List the external domains your workflow expects to use in
+`submission.json`.
+
+If your workflow needs pretrained weights or other model assets, the most
+reliable approach is generally to package them into the image. Runtime
+retrieval is possible only where it remains compatible with the competition
+data rules, network limits, image/runtime design, and the 15-minute
+execution budget.
+
+---
+
+## Required forecast output
+
+Each inference must produce one forecast containing exactly **72 hourly
+solar-wind-speed predictions**, in kilometres per second.
+
+The starter package uses the following JSON structure:
+
+```json
+{
+  "t0": "2026-11-11T06:00:00Z",
+  "valid_from": "2026-11-11T07:00:00Z",
+  "forecast_speed_kms": [
+    418.2,
+    419.9
+  ]
+}
+
