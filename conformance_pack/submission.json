@@ -1,0 +1,7 @@
+{
+  "team_name": "conformance-test",
+  "contact_email": "conformance@example.invalid",
+  "cpu_units": 1024,
+  "memory_mib": 2048,
+  "declared_domains": ["services.swpc.noaa.gov"]
+}
