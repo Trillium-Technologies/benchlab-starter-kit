@@ -336,18 +336,18 @@ A successful run requires both the forecasting workflow to exit successfully and
 
 Before uploading a real competition submission, confirm that:
 
-- [ ] the supplied example worked locally before you began modifying it;
-- [ ] your complete adapted workflow passes `local_tests/test_local.sh`;
-- [ ] your image builds for `linux/amd64`;
-- [ ] your workflow accepts the supplied `t0`;
-- [ ] your live-data logic respects the `t0` data cut-off;
-- [ ] your forecast contains exactly 72 hourly speed predictions;
-- [ ] your workflow returns the forecast through the required output path;
-- [ ] your CPU and memory request is a supported combination;
-- [ ] required runtime domains are declared in `submission.json`;
-- [ ] required model weights/assets are available at inference time;
-- [ ] your Docker image remains below the published size limit;
-- [ ] the workflow completes comfortably within the 15-minute budget;
-- [ ] `Dockerfile`, `submission.json`, and `README.md` are at the ZIP root;
-- [ ] your `README.md` documents the actual submitted workflow; and
-- [ ] you have left enough time to review a failed cloud qualification and resubmit if necessary.
+- [ ] the supplied example worked locally before you began modifying it
+- [ ] your complete adapted workflow passes `local_tests/test_local.sh`
+- [ ] your image builds for `linux/amd64`
+- [ ] your workflow accepts the supplied `t0`
+- [ ] your live-data logic respects the `t0` data cut-off
+- [ ] your forecast contains exactly 72 hourly speed predictions
+- [ ] your workflow returns the forecast through the required output path
+- [ ] your CPU and memory request is a supported combination
+- [ ] required runtime domains are declared in `submission.json`
+- [ ] required model weights/assets are available at inference time
+- [ ] your Docker image remains below the published size limit
+- [ ] the workflow completes comfortably within the 15-minute budget
+- [ ] `Dockerfile`, `submission.json`, and `README.md` are at the ZIP root
+- [ ] your `README.md` documents the actual submitted workflow
+- [ ] you have left enough time to review a failed cloud qualification and resubmit if necessary
