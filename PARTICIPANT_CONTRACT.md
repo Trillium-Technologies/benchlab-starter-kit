@@ -316,6 +316,7 @@ The starter package uses the following JSON structure:
     419.9
   ]
 }
+```
 
 The `forecast_speed_kms` array must contain exactly 72 values, ordered from
 `t0 + 1 hour` through `t0 + 72 hours`.
@@ -323,9 +324,9 @@ The `forecast_speed_kms` array must contain exactly 72 values, ordered from
 The complete output object must be no larger than **1 MiB**.
 
 The running container receives a one-time output specification through:
-
 ```bash
 $OUTPUT_POST
+```
 
 The supplied `upload.sh` uses that value to return the completed forecast to Benchlab. Your container does not need AWS credentials.
 
