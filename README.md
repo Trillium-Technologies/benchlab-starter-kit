@@ -5,16 +5,16 @@ using anything in this repository.
 
 This repository contains the starter materials for participating in the Benchlab Solar Wind Prediction Tournament.
 
-**New participants: start with [PARTICIPANT_CONTRACT.md](PARTICIPANT_CONTRACT.md)**
+**New participants: start with [`PARTICIPANT_CONTRACT.md`](PARTICIPANT_CONTRACT.md)**
 
 It explains the execution contract, starter-package files, local development workflow, conformance, real-model qualification, and live execution process.
 
 Then:
 
-1. Run the supplied example in submission_pack/ unchanged.
-2. Adapt submission_pack/ to your forecasting workflow.
+1. Run the supplied example in `submission_pack/` unchanged.
+2. Adapt `submission_pack/` to your forecasting workflow.
 3. Test locally as you develop.
-4. Complete the separate conformance_pack/ exercise when Benchlab issues your team access.
+4. Complete the separate `conformance_pack/` exercise when Benchlab issues your team access.
 5. During pre-deployment, submit your real workflow and iterate until it reaches ELIGIBLE .
 
 ## What's here
