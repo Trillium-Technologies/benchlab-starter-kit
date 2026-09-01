@@ -86,9 +86,7 @@ Everything else is here to make the contract easy to meet:
 }
 ```
 
-`cpu_units` / `memory_mib` must be one of the valid Fargate combinations
-below — anything else is **rounded up**, and you're billed at the rounded
-tier:
+`cpu_units` / `memory_mib` must be one of the valid Fargate combinations below. Unsupported combinations are rounded up to the next supported Fargate configuration. 
 
 | `cpu_units` | vCPU | `memory_mib` range | Step |
 |---|---|---|---|
