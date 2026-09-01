@@ -5,7 +5,7 @@ using anything in this repository.
 
 This repository contains the starter materials for participating in the Benchlab Solar Wind Prediction Tournament.
 
-**New participants: start with PARTICIPANT_CONTRACT.md**
+**New participants: start with [PARTICIPANT_CONTRACT.md](PARTICIPANT_CONTRACT.md)**
 
 It explains the execution contract, starter-package files, local development workflow, conformance, real-model qualification, and live execution process.
 
