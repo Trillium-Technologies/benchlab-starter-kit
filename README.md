@@ -1,11 +1,12 @@
-# BenchLab: Solar Wind Prediction Tournament 2026
+![](assets/SolarWindPredictionBanner.png)
 
-Materials for entrants. See [`LICENSE`](LICENSE) for terms. Read it before
-using anything in this repository.
+### This repository contains the starter materials for those participating in the 2026 Benchlab Solar Wind Prediction Tournament.
 
-This repository contains the starter materials for participating in the Benchlab Solar Wind Prediction Tournament.
+---
 
-**New participants: start with [`PARTICIPANT_CONTRACT.md`](PARTICIPANT_CONTRACT.md)**
+Please see [`LICENSE`](LICENSE) for terms before using anything in this repository.
+
+**New participants: Start with [`PARTICIPANT_CONTRACT.md`](PARTICIPANT_CONTRACT.md)**
 
 It explains the execution contract, starter-package files, local development workflow, conformance, real-model qualification, and live execution process.
 
