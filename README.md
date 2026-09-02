@@ -54,3 +54,14 @@ bash conformance_pack/verify.sh
 `export -f` is required. A plain `alias` won't reach the script, since
 `bash verify.sh` runs as a separate process and doesn't inherit aliases from
 your interactive shell.
+
+---
+
+</br> 
+
+![](assets/SolarWindPredictionFooter.png)
+
+</br> 
+
+*Benchlab is an initiative of **Trillium Technologies Inc.**, hosting this competition in partnership with **Queen Mary University of London**, **CU Boulder** and the **Frontier Development Lab**. This work is supported by NASA Grant Number: 80NSSC25K7178.*
+
