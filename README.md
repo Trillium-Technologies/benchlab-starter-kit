@@ -46,7 +46,7 @@ Prepare your submission by zipping `conformance_pack/` *without making any chang
    cd conformance_pack && zip -r ../kit.zip .
    ```
 
-Then, get your portal link, which was emailed to you on Sept 25, and upload `conformance_pack/` exactly as it is.
+Then, get your portal link, which was emailed to you on Sept 25, and upload `kit.zip` exactly as it is.
 
 ## Submission
 
