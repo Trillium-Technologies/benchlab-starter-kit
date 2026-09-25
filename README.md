@@ -46,7 +46,7 @@ Prepare your submission by zipping `conformance_pack/` *without making any chang
    cd conformance_pack && zip -r ../kit.zip .
    ```
 
-Then, get your portal link, which was emailed to you on Sept 25, and upload zipped file (`kit.zip` in this example) exactly as it is, using the following terminal command:
+Then, get your portal link, which was emailed to you on Sept 25, and upload the zipped file (`kit.zip` in this example) exactly as it is, using the following terminal command, with the fields filled using the corresponding values shown in your portal page:
 
 ```
 curl -fSs -o /dev/null -w 'HTTP status: %{http_code}\n' -F 'key=...' -F 'AWSAccessKeyId=...' -F 'x-amz-security-token=...' -F 'policy=...' -F 'signature=...' -F 'file=@kit.zip' 'https://...s3.amazonaws.com/'
