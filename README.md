@@ -48,7 +48,8 @@ Prepare your submission by zipping `conformance_pack/` *without making any chang
 
 Then, get your portal link, which was emailed to you on Sept 25, and upload zipped file (`kit.zip` in this example) exactly as it is, using the following terminal command:
 
-```curl -fSs -o /dev/null -w 'HTTP status: %{http_code}\n' -F 'key=...' -F 'AWSAccessKeyId=...' -F 'x-amz-security-token=...' -F 'policy=...' -F 'signature=...' -F 'file=@kit.zip' 'https://...s3.amazonaws.com/'
+```
+curl -fSs -o /dev/null -w 'HTTP status: %{http_code}\n' -F 'key=...' -F 'AWSAccessKeyId=...' -F 'x-amz-security-token=...' -F 'policy=...' -F 'signature=...' -F 'file=@kit.zip' 'https://...s3.amazonaws.com/'
  ```
 
 A returned message of "HTTP status: 204" indicates that the file successfully reached the upload bucket.
