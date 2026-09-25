@@ -28,7 +28,7 @@ the kit and submit it unchanged.
 
 ## Uploading
 
-Get your upload URL from your portal link (emailed at pre-registration),
+Get your upload URL from your portal link (emailed on Friday, September 25th),
 then submit the whole kit as a zip. Zip the **contents**, not the folder:
 
 ```bash

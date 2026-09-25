@@ -27,7 +27,7 @@ Then:
 
 ## Order of operations
 
-1. Conformance first. Get your portal link (emailed Sept 15 after final registration/selection),
+1. Conformance first. Get your portal link (emailed Friday, Sept 25),
    download this repo, and submit `conformance_pack/` exactly as it is.
    Zip its contents, not the folder:
    ```bash
