@@ -17,7 +17,7 @@ Please see [`LICENSE`](LICENSE) for terms before using anything in this reposito
 Download this repository.
 
 ### 2. Verify
-From inside the `conformance_pack/` folder, run `bash verify.sh` to confirm your copy matches what's expected.
+From the top folder of this repository (the one containing `conformance_pack/` and `submission_pack/`), run `(cd conformance_pack && bash verify.sh)` to confirm your copy matches what's expected. It must print `OK — kit is unmodified`.
 
 #### ATTENTION: If you are using MacOS 
 
@@ -29,8 +29,7 @@ or run this once in the same shell before calling the script:
 ```bash
 sha256sum() { shasum -a 256 "$@"; }
 export -f sha256sum
-cd conformance_pack/
-bash ./verify.sh
+(cd conformance_pack && bash ./verify.sh)
 ```
 
 `export -f` is required. A plain `alias` won't reach the script, since
@@ -39,20 +38,44 @@ your interactive shell.
 
 ### 3. Upload
 
-Prepare your submission by zipping `conformance_pack/` *without making any changes to it*.
+Run these from the top folder of the repository.
 
-   Zip its contents, not the folder itself:
-   ```bash
-   cd conformance_pack && zip -r ../kit.zip .
-   ```
+Prepare your submission by zipping `conformance_pack/` *without making any changes to it*. Zip its contents, not the folder itself:
 
-Then, get the portal link that was emailed to you and upload the zipped file (`kit.zip` in this example) exactly as it is, using the following terminal command, with the fields filled using the corresponding values shown in your portal page:
-
+```bash
+(cd conformance_pack && zip -r ../kit.zip .)
 ```
-curl -fSs -o /dev/null -w 'HTTP status: %{http_code}\n' -F 'key=...' -F 'AWSAccessKeyId=...' -F 'x-amz-security-token=...' -F 'policy=...' -F 'signature=...' -F 'file=@kit.zip' 'https://...s3.amazonaws.com/'
- ```
 
-A returned message of "HTTP status: 204" indicates that the file successfully reached the upload bucket.
+This creates `kit.zip` in the top folder.
+
+Next, get your upload form from the portal. Open the portal link that was emailed to you in a browser, or run `curl -s 'YOUR_PORTAL_LINK'` (keep the quotes). Your link contains a secret token, so don't share it. You will see JSON, and its `upload` section holds what you need:
+
+- `url`: the storage bucket address. This is **not** the portal link.
+- `fields`: five values (`key`, `AWSAccessKeyId`, `x-amz-security-token`, `policy`, `signature`) that act as a one-hour upload pass.
+
+Copy each value into the command below in place of the `...`, and use `url` as the final address. Keep `file` last:
+
+```bash
+curl -sS -o resp.txt -w 'HTTP status: %{http_code}\n' -F 'key=...' -F 'AWSAccessKeyId=...' -F 'x-amz-security-token=...' -F 'policy=...' -F 'signature=...' -F 'file=@kit.zip' 'https://...s3.amazonaws.com/'
+```
+
+`HTTP status: 204` means your file reached the upload bucket. Any other status: run `cat resp.txt` to see why. The usual cause is an expired form. They last one hour, so fetch the portal page again and retry.
+
+To check your result, reload the portal page and look at `eligibility`, `conformance` and `failure_reason`. `conformance: PASSED` means you are done, and `eligibility` staying `REGISTERED` at this stage is correct. Your build logs are listed under `logs`.
+
+> The `README.md` inside `conformance_pack/` mentions a different folder name in its zip command. Ignore it and use the instructions here.
+
+#### Optional: let a script do the copy and paste
+
+If you have `curl`, `jq` and `zip` installed (bash on macOS or Linux, or Git Bash / WSL on Windows), one script does the checking, zipping, form fetching and uploading:
+
+```bash
+cp .team.example .team              # then open .team and paste your portal link inside the quotes
+bash submit_conformance.sh          # check, zip, upload
+bash submit_conformance.sh status   # later: your status and build log links
+```
+
+`.team` contains your secret token, so don't commit or share it (`.gitignore` already excludes it).
 
 ## Submission
 
