@@ -1,3 +1,7 @@
 # Your portal link contains a secret token. Never commit it.
 .team
 kit.zip
+
+# Python bytecode, and scoring_demo/score.py output
+__pycache__/
+report.json
