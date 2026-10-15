@@ -10,6 +10,7 @@ Please see [`LICENSE`](LICENSE) for terms before using anything in this reposito
 |---|---|
 | [`conformance_pack/`](conformance_pack/) | The frozen conformance test kit. Submit it unmodified to prove your access and upload path work, before you touch the real submission. See instructions [below](#conformance-do-this-first). |
 | [`submission_pack/`](submission_pack/) | The real submission template. This is yours to edit: replace the model, keep the contract. See instructions [below](#submission). |
+| [`scoring_demo/`](scoring_demo/) | Optional. Shows how forecasts are scored, using the competition's scoring code on a backlog of baseline forecasts. You can also use it to score your own past forecasts. Nothing in it is uploaded. |
 
 ## Conformance (DO THIS FIRST)
 
