@@ -1,0 +1,3 @@
+[ace_archive]
+base_url = "https://sohoftp.nascom.nasa.gov/sdb/goes/ace/monthly"
+filename_template = "{yyyymm}_ace_swepam_1h.txt"

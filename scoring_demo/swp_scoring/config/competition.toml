@@ -1,0 +1,14 @@
+forecast_field = "forecast_speed_kms"
+horizon_hours = 72
+units = "km/s"
+valid_range = [0.0, 10000.0]
+competition_start = "2026-10-06T00:00:00Z"
+cycle_hours_utc = [0, 6, 12, 18]
+percentile_intervals = 100
+quantile_method = "linear"
+accepted_status = [0]
+missing_sentinel = -9999.9
+persistence_lookback_hours = 72
+
+[baselines]
+climatology_kms = 469.5
