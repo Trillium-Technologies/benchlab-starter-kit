@@ -10,6 +10,7 @@ Please see [`LICENSE`](LICENSE) for terms before using anything in this reposito
 |---|---|
 | [`conformance_pack/`](conformance_pack/) | The frozen conformance test kit. Submit it unmodified to prove your access and upload path work, before you touch the real submission. See instructions [below](#conformance-do-this-first). |
 | [`submission_pack/`](submission_pack/) | The real submission template. This is yours to edit: replace the model, keep the contract. See instructions [below](#submission). |
+| [`scoring_demo/`](scoring_demo/) | Optional. Shows how forecasts are scored, using the competition's scoring code on a backlog of baseline forecasts. You can also use it to score your own past forecasts. Nothing in it is uploaded. |
 
 ## Conformance (DO THIS FIRST)
 
@@ -89,6 +90,20 @@ Then:
 2. Adapt `submission_pack/` to your forecasting workflow.
 3. Test locally as you develop.
 4. **During the pre-deployment window**, submit your real workflow and iterate until it reaches **ELIGIBLE**.
+
+### Uploading your submission
+
+Uploading works the same way as conformance, with the same portal link and `.team` file. The script checks that submissions are open, checks and zips the *contents* of `submission_pack/`, and uploads it:
+
+```bash
+(cd submission_pack/local_tests && bash test_local.sh)  # always test locally first
+bash submit_submission.sh                                # check, zip, upload
+bash submit_submission.sh status                         # later: eligibility, your dry run's result, and log links
+```
+
+To upload a different folder, run `SUBMISSION_DIR=my_folder bash submit_submission.sh`. To upload by hand instead, zip with `(cd submission_pack && zip -r ../submission.zip .)` and use the conformance `curl` command above with `file=@submission.zip`.
+
+Every upload replaces the previous one and has to qualify again in its own right. An earlier `ELIGIBLE` version is not kept as a fallback.
 
 ---
 
