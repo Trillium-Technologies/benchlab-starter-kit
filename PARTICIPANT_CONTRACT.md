@@ -60,8 +60,8 @@ The starter package contains both the Benchlab interface and a minimal example f
 | `requirements.txt` | Lists the Python packages installed when the example Docker image is built. | Add your Python dependencies here. Delete/replace it if you do not use Python. |
 | `run.sh` | The bridge between Benchlab and your forecasting workflow. Benchlab supplies `t0`; this script launches your model, creates `forecast.json`, and calls the output uploader. | Usually only the marked model-execution line needs changing. |
 | `upload.sh` | Sends the completed `forecast.json` to the temporary output location supplied by Benchlab for that run. | Normally leave this unchanged. You may reimplement the same behavior in another language. |
-| `submission.json` | Declares the compute resources and basic configuration your submission requires. | Set your team information, CPU, memory, and declared external domains. |
-| `README.md` | Documentation describing **your submitted model/workflow**. Benchlab requires this file to exist at the root of your final submission. | Replace the placeholder with documentation of your own approach, inputs, dependencies, weights/assets, external data sources, and reproducibility information. |
+| `submission.json` | Declares the compute resources and basic configuration your submission requires. | Set your team information, CPU, memory, and every external domain your workflow contacts. |
+| `README.md` | Documentation describing **your submitted model/workflow**. Benchlab requires this file to exist at the root of your final submission. | Replace the placeholder with documentation of your own approach, inputs, dependencies, weights/assets, external data sources, and reproducibility information. It must include a public summary of your method of up to 300 words, which may be published with the results. |
 | `local_tests/` | A local simulation of the basic Benchlab execution contract. It builds your Docker image, launches it with a test timestamp, receives the forecast using a mock Benchlab endpoint, and validates the output. | Run this repeatedly while developing your submission. |
 
 ## Recommended workflow
@@ -105,7 +105,7 @@ source at runtime.
 ### 4. Configure resources
 
 Edit `submission.json` to specify the CPU and memory your workflow requires
-and declare the external domains it expects to contact.
+and list every external domain it contacts.
 
 ### 5. Test locally again
 
@@ -209,6 +209,18 @@ evaluated. Your model may retrieve new permitted observations at each cycle,
 but its code, packaged model assets, and software environment come from the
 qualified image.
 
+### Forecasts must be deterministic
+
+The same `t0` and the same inputs must always give the same forecast. We
+may re-run a forecast at any time to check this. To make sure of it:
+
+- fix every random seed
+- pin your dependency versions
+- do not rely on state that is not recorded in your submission
+
+Anything external your workflow calls must also behave in the same way for
+the whole competition.
+
 ---
 
 ## The inference timestamp and data cut-off
@@ -287,10 +299,15 @@ Do not assume that every external source will always respond immediately or
 contain every expected observation.
 
 Public internet access is available to the running container, subject to
-the published competition rules and a 20 GB-per-run network fair-use limit.
+the published competition rules and a 20 GB-per-run network fair-use limit
+(pulling your image does not count towards it).
 
-List the external domains your workflow expects to use in
-`submission.json`.
+List **every** external domain your workflow contacts in the
+`declared_domains` field of `submission.json`. Contacting a domain you have
+not declared breaks the competition rules.
+
+The 15-minute limit runs from launch and **includes pulling your image**,
+so a larger image leaves less time for your workflow.
 
 If your workflow needs pretrained weights or other model assets, the most
 reliable approach is generally to package them into the image. Runtime
@@ -344,10 +361,11 @@ Before uploading a real competition submission, confirm that:
 - [ ] your forecast contains exactly 72 hourly speed predictions
 - [ ] your workflow returns the forecast through the required output path
 - [ ] your CPU and memory request is a supported combination
-- [ ] required runtime domains are declared in `submission.json`
+- [ ] every external domain your workflow contacts is listed in `submission.json`
 - [ ] required model weights/assets are available at inference time
 - [ ] your Docker image remains below the published size limit
-- [ ] the workflow completes comfortably within the 15-minute budget
+- [ ] the workflow completes comfortably within the 15-minute budget, including image pull
+- [ ] random seeds are fixed and dependency versions pinned, so the same `t0` and inputs give the same forecast
 - [ ] `Dockerfile`, `submission.json`, and `README.md` are at the ZIP root
-- [ ] your `README.md` documents the actual submitted workflow
+- [ ] your `README.md` documents the actual submitted workflow, including a public method summary of up to 300 words
 - [ ] you have left enough time to review a failed cloud qualification and resubmit if necessary

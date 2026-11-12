@@ -91,6 +91,20 @@ Then:
 3. Test locally as you develop.
 4. **During the pre-deployment window**, submit your real workflow and iterate until it reaches **ELIGIBLE**.
 
+### Uploading your submission
+
+Uploading works the same way as conformance, with the same portal link and `.team` file. The script checks that submissions are open, checks and zips the *contents* of `submission_pack/`, and uploads it:
+
+```bash
+(cd submission_pack/local_tests && bash test_local.sh)  # always test locally first
+bash submit_submission.sh                                # check, zip, upload
+bash submit_submission.sh status                         # later: eligibility, your dry run's result, and log links
+```
+
+To upload a different folder, run `SUBMISSION_DIR=my_folder bash submit_submission.sh`. To upload by hand instead, zip with `(cd submission_pack && zip -r ../submission.zip .)` and use the conformance `curl` command above with `file=@submission.zip`.
+
+Every upload replaces the previous one and has to qualify again in its own right. An earlier `ELIGIBLE` version is not kept as a fallback.
+
 ---
 
 </br> 

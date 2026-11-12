@@ -7,7 +7,7 @@
 # Replace everything between the EDIT markers, including the
 # language and runtime. Keep the ENTRYPOINT contract.
 # ==============================================================
-FROM ubuntu:22.04
+FROM public.ecr.aws/ubuntu/ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 WORKDIR /app
