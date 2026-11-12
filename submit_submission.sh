@@ -98,7 +98,7 @@ submit() {
 
   echo "3/5 Zipping the contents of $SUBMISSION_DIR/ (not the folder itself)..."
   rm -f "$ZIP"
-  (cd "$SUBMISSION_DIR" && zip -qr "../$ZIP" . -x 'local_tests/out/*' '*.DS_Store' '.git/*' '*__pycache__*')
+  (cd "$SUBMISSION_DIR" && zip -qr "$OLDPWD/$ZIP" . -x 'local_tests/out/*' '*.DS_Store' '.git/*' '*__pycache__*')
   SIZE=$(wc -c < "$ZIP" | tr -d ' ')
   [ "$SIZE" -le "$MAX_ZIP_BYTES" ] \
     || die "$ZIP is $((SIZE / 1024 / 1024)) MB; the limit is 500 MB. Download large weights in your Dockerfile instead."
