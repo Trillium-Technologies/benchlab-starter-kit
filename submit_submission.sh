@@ -37,6 +37,12 @@ case "${PORTAL:-}" in
   *) die "PORTAL in .team is empty or is not a link. Paste the full link from your email, inside the quotes." ;;
 esac
 
+# Windows (Git Bash): jq.exe and Notepad-edited files can end lines with \r\n.
+# A stray \r on a form field turns the access key into one S3 doesn't know
+# (403 InvalidAccessKeyId), so strip it from everything we read.
+PORTAL="${PORTAL%$'\r'}"
+jqr() { jq -r "$@" | tr -d '\r'; }
+
 TMP=$(mktemp -d)
 trap 'rm -rf "$TMP"' EXIT
 
@@ -54,7 +60,7 @@ show_status() {
       | if type == "object" then {cycle_ts, status, failure_reason, exit_code, pull_seconds, run_seconds} else . end' \
     "$TMP/portal.json"
   echo "Log links (valid for 1 hour; build logs are gzipped, so pipe them through gunzip):"
-  jq -r '.logs[]? | "\(.key)\n  \(.url)"' "$TMP/portal.json"
+  jqr '.logs[]? | "\(.key)\n  \(.url)"' "$TMP/portal.json"
 }
 
 # Prints the FROM images that come from Docker Hub: no registry host in the
@@ -76,7 +82,7 @@ docker_hub_images() {
 submit() {
   echo "1/5 Checking the portal is accepting real submissions..."
   fetch_portal
-  PHASE=$(jq -r '.phase // empty' "$TMP/portal.json")
+  PHASE=$(jqr '.phase // empty' "$TMP/portal.json")
   case "$PHASE" in
     conformance) die "submissions are not open yet; the portal only accepts the conformance kit. Uploading now would mark your conformance as FAILED." ;;
     closed)      die "submissions are closed. Your last ELIGIBLE submission is the one that runs." ;;
@@ -105,12 +111,12 @@ submit() {
   echo "    $ZIP is $((SIZE / 1024)) KB (limit 500 MB)"
 
   echo "4/5 Getting your upload form from the portal..."
-  URL=$(jq -r '.upload.url // empty' "$TMP/portal.json")
+  URL=$(jqr '.upload.url // empty' "$TMP/portal.json")
   [ -n "$URL" ] || die "the portal did not return an upload form."
   ARGS=()
   while IFS=$'\t' read -r k v; do
     ARGS+=(--form-string "$k=$v")
-  done < <(jq -r '.upload.fields | to_entries[] | [.key, .value] | @tsv' "$TMP/portal.json")
+  done < <(jqr '.upload.fields | to_entries[] | [.key, .value] | @tsv' "$TMP/portal.json")
   [ "${#ARGS[@]}" -gt 0 ] || die "the upload form had no fields."
 
   echo "5/5 Uploading $ZIP..."
